@@ -1,0 +1,71 @@
+<!-- chatbot/templates/chatbot/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <style>
+        .chat-box {
+            width: 60%;
+            margin: 0 auto;
+            background-color: #f1f1f1;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .messages {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .messages li {
+            margin-bottom: 10px;
+        }
+        .user-msg {
+            background-color: #e0e0e0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .bot-msg {
+            background-color: #87CEEB;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-box">
+        <h2>Chat with the Bot</h2>
+        <ul class="messages" id="messages"></ul>
+        <input type="text" id="user-input" placeholder="Type a message..." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const userMessage = document.getElementById('user-input').value;
+            const messagesList = document.getElementById('messages');
+
+            // Display the user's message
+            const userMessageElement = document.createElement('li');
+            userMessageElement.classList.add('user-msg');
+            userMessageElement.textContent = userMessage;
+            messagesList.appendChild(userMessageElement);
+
+            // Clear the input field
+            document.getElementById('user-input').value = '';
+
+            // Send the message to the server via AJAX
+            fetch(`/chat/?message=${userMessage}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Display the bot's response
+                    const botMessageElement = document.createElement('li');
+                    botMessageElement.classList.add('bot-msg');
+                    botMessageElement.textContent = data.response;
+                    messagesList.appendChild(botMessageElement);
+                });
+        }
+    </script>
+</body>
+</html>
