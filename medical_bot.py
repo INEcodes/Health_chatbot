@@ -7,10 +7,15 @@ import tensorflow as tf
 import random
 import json
 import pickle
-import tflearn #(for tflearn installation use the pip statement as: !pip install git+https://github.com/MihaMarkic/tflearn.git@fix/is_sequence_missing )
-with open('C:/Users/Abhay/Documents/GitHub/Health_chatbot/intents.json') as f:
+import json
+
+with open("intents.json",'r',encoding='cp850') as f:
     data = json.load(f)
 
+import tflearn
+import nltk
+nltk.download('punkt')
+nltk.download('punkt_tab')
 words = []
 labels = []
 docs_x = []
@@ -25,7 +30,7 @@ for intent in data["intents"]:
 
 
   if intent["tag"] not in labels:
-    labels.append(intent["tag"])  
+    labels.append(intent["tag"])
 
 words = [stemmer.stem(w.lower()) for w in words if  w not in "?"]
 words = sorted(list(set(words)))
@@ -94,9 +99,9 @@ def chat():
     tag = labels[results_index]
 
     for tg in data["intents"]:
-      
+
       if tg['tag'] == tag:
-        
+
         responses = tg['responses']
 
         response_list = nltk.sent_tokenize(str(responses[0]))
@@ -107,5 +112,3 @@ def chat():
             print(f'\033[1;{colors[color_index]}m {response_list[i]:<12s}\n')
             
 chat()
-
-#https://colab.research.google.com/drive/1-uPH9_b7cT25D4BL-XKd82CitHSPHOCz?usp=sharing   colab link if this dosen't work
