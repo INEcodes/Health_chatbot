@@ -111,4 +111,4 @@ def chat():
             color_index = i % len(colors)
             print(f'\033[1;{colors[color_index]}m {response_list[i]:<12s}\n')
             
-chat()
+chat()  
